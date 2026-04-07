@@ -61,10 +61,21 @@ def ask_claude(user_message):
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    body = request.get_json()
+    # 尝试解析 JSON
+    try:
+        body = request.get_json(force=True)
+    except Exception:
+        body = {}
 
-    # 飞书验证 URL 有效性
+    if not body:
+        return jsonify({"code": 0})
+
+    # 飞书验证 URL 有效性（明文模式）
     if body.get("type") == "url_verification":
+        return jsonify({"challenge": body.get("challenge")})
+
+    # 飞书验证 URL 有效性（加密模式）
+    if body.get("challenge"):
         return jsonify({"challenge": body.get("challenge")})
 
     # 处理消息事件
