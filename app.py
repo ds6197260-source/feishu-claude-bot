@@ -37,11 +37,10 @@ def get_feishu_token():
 def send_feishu_message(open_id, text, token):
     url = "https://open.feishu.cn/open-apis/im/v1/messages"
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    r = httpx.post(url, headers=headers, json={
+    r = httpx.post(url, headers=headers, params={"receive_id_type": "open_id"}, json={
         "receive_id": open_id,
         "msg_type": "text",
         "content": json.dumps({"text": text}),
-        "receive_id_type": "open_id"
     })
     print(f"Send message result: {r.status_code} {r.text}")
 
