@@ -53,7 +53,7 @@ def ask_claude(user_message):
         json={
             "model": "claude-sonnet-4-20250514",
             "max_tokens": 1024,
-            "messages": [{"role": "user", "content": user_message}]
+            "system": "你是一个智能助手，请始终用中文回复用户。", "messages": [{"role": "user", "content": user_message}]
         },
         timeout=60
     )
